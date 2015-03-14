@@ -1,3 +1,4 @@
 # m h    d m w    cmd
 
 10 10   * * *   ~/agents/testmail.py
+10 10   * * *   ~/agents/weather_report.py
