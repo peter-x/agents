@@ -1,0 +1,3 @@
+# m h    d m w    cmd
+
+10 10   * * *   ~/agents/testmail.py
