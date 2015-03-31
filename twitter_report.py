@@ -3,7 +3,8 @@
 
 from time import time
 from twitter_search import getTweets
-from mail import sendMarkdown
+from mail import sendHtml
+from cgi import escape
 from settings import sources
 import simpledb
 
@@ -26,9 +27,18 @@ for content, timestamp in tweetdb['tweets_seen'].items():
 
 simpledb.write('twitter_report', tweetdb)
 
+def formatContent(c):
+    from re import sub
+    c = escape(c)
+    return sub(ur"(https?://[a-zA-Z0-9!$&()*+:/?#\[\]@,:='\~.-]*)", ur'<a href="\1">\1</a>', c)
 
 if len(new_tweets) > 0:
-    text = u""
+    text = ur'<html><meta charset="utf-8">'
+    text += ur'<body style="width: 50ex; font: 16px/1.6 &quot;Helvetica Neue&quot;,Helvetica,Arial,freesans,sans-serif;">'
     for tweet in new_tweets:
-        text += u"{timestamp}, {name}:\n\n    {content}\n\n".format(**tweet)
-    sendMarkdown(text, subject="News from Twitter")
+        tweet['timestamp'] = escape(tweet['timestamp'])
+        tweet['name'] = escape(tweet['name'])
+        tweet['content'] = formatContent(tweet['content'])
+        text += u"<h4>{timestamp}, {name}</h4><p>{content}</p>\n".format(**tweet)
+    text += u'</body></html>'
+    sendHtml(text, subject="News from Twitter")
