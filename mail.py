@@ -15,4 +15,4 @@ def sendHtml(text, subject='Message from your agent'):
 
 def sendMarkdown(text, subject='Message from your agent'):
     from markdown import markdown
-    sendHtml(markdown(text).encode('utf-8'), subject)
+    sendHtml(markdown(text), subject)
