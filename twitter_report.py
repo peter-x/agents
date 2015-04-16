@@ -30,7 +30,7 @@ simpledb.write('twitter_report', tweetdb)
 def formatContent(c):
     from re import sub
     c = escape(c)
-    return sub(ur"(https?://[a-zA-Z0-9!$&()*+:/?#\[\]@,:='\~._-]*)", ur'<a href="\1">\1</a>', c)
+    return sub(ur"(https?://[%a-zA-Z0-9!$&()*+:/?#\[\]@,:='\~._-]*)", ur'<a href="\1">\1</a>', c)
 
 if len(new_tweets) > 0:
     text = ur'<html><meta charset="utf-8">'
