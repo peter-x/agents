@@ -13,11 +13,13 @@ tweetdb = simpledb.read('twitter_report')
 if tweetdb is None:
     tweetdb = {'tweets_seen': {}}
 
+ignores = sources['twitter']['ignore']
 new_tweets = []
 for term in sources['twitter']['searchTerms']:
     for tweet in getTweets(term):
         content = tweet['content']
-        if content not in tweetdb['tweets_seen']:
+        if content not in tweetdb['tweets_seen'] and \
+                tweet['username'] not in ignores:
             new_tweets += [tweet]
         tweetdb['tweets_seen'][content] = now
 
@@ -39,6 +41,6 @@ if len(new_tweets) > 0:
         tweet['timestamp'] = escape(tweet['timestamp'])
         tweet['name'] = escape(tweet['name'])
         tweet['content'] = formatContent(tweet['content'])
-        text += u"<h4>{timestamp}, {name}</h4><p>{content}</p>\n".format(**tweet)
+        text += u"<h4>{timestamp}, {username} {name}</h4><p>{content}</p>\n".format(**tweet)
     text += u'</body></html>'
     sendHtml(text, subject="News from Twitter")

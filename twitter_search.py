@@ -11,6 +11,7 @@ def getTweets(query):
         data = {}
         data['timestamp'] = tweet.select('.tweet-timestamp')[0].attrs['title']
         data['name'] = tweet.select('.fullname')[0].text
+        data['username'] = tweet.select('.username')[0].text
         data['content'] = tweet.select('.tweet-text')[0].text
         tweets += [data]
     return tweets
